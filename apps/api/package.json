@@ -1,0 +1,20 @@
+{
+  "name": "@liga-arena/api",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "latest",
+    "@fastify/multipart": "^10.1.0",
+    "@fastify/static": "^10.1.2",
+    "@liga-arena/database": "*",
+    "dotenv": "latest",
+    "fastify": "latest",
+    "pino-pretty": "latest",
+    "sharp": "^0.35.3"
+  }
+}

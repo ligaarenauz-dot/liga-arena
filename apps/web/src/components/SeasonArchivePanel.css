@@ -1,0 +1,360 @@
+.season-archive-panel {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,.08);
+  color: #f4f4f1;
+  background:
+    radial-gradient(
+      circle at 90% 0,
+      rgba(214,174,93,.1),
+      transparent 35%
+    ),
+    #0d0f11;
+}
+
+.season-archive-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.season-archive-header > svg {
+  color: #d6ae5d;
+}
+
+.season-archive-header span {
+  color: #d6ae5d;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .17em;
+}
+
+.season-archive-header h2 {
+  margin: 5px 0 0;
+  font-size: 19px;
+}
+
+.season-archive-header p {
+  margin: 6px 0 0;
+  color: #969ca4;
+  font-size: 8px;
+}
+
+.season-archive-controls {
+  display: grid;
+  grid-template-columns:
+    1fr 100px 150px 40px;
+  gap: 7px;
+  margin-top: 13px;
+  padding: 7px;
+  border: 1px solid rgba(255,255,255,.07);
+  background: #121417;
+}
+
+.season-archive-controls > div {
+  display: flex;
+  gap: 5px;
+}
+
+.season-archive-controls button,
+.season-archive-controls select {
+  min-height: 35px;
+  border: 1px solid rgba(255,255,255,.08);
+  color: #a4aab2;
+  background: #101215;
+  font-size: 7px;
+}
+
+.season-archive-controls > div button {
+  padding: 0 12px;
+}
+
+.season-archive-controls button.active {
+  border-color: rgba(214,174,93,.4);
+  color: #f0cf83;
+  background: rgba(214,174,93,.07);
+}
+
+.season-archive-controls select {
+  width: 100%;
+  padding: 0 8px;
+  outline: none;
+}
+
+.season-archive-controls option {
+  color: #f4f4f1;
+  background: #15171a;
+}
+
+.season-archive-summary {
+  display: grid;
+  grid-template-columns:
+    repeat(4,1fr);
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.season-archive-summary > div {
+  min-height: 57px;
+  padding: 9px;
+  border: 1px solid rgba(255,255,255,.065);
+  background: #121417;
+}
+
+.season-archive-summary span,
+.season-archive-summary strong {
+  display: block;
+}
+
+.season-archive-summary span {
+  color: #898f97;
+  font-size: 5px;
+  font-weight: 850;
+}
+
+.season-archive-summary strong {
+  margin-top: 5px;
+  color: #f0cf83;
+  font-size: 12px;
+}
+
+.season-archive-table {
+  margin-top: 9px;
+  border: 1px solid rgba(255,255,255,.07);
+  background: #121417;
+}
+
+.season-archive-table > header,
+.season-archive-table > article {
+  display: grid;
+  align-items: center;
+}
+
+.season-archive-table--pubg > header,
+.season-archive-table--pubg > article {
+  grid-template-columns:
+    38px minmax(0,1fr)
+    53px 53px 58px;
+}
+
+.season-archive-table--mlbb > header,
+.season-archive-table--mlbb > article {
+  grid-template-columns:
+    36px minmax(0,1fr)
+    44px 38px 38px 48px 50px;
+}
+
+.season-archive-table > header {
+  min-height: 36px;
+  border-bottom: 1px solid rgba(214,174,93,.16);
+  color: #969ca4;
+  font-size: 6px;
+  font-weight: 850;
+}
+
+.season-archive-table > header span {
+  text-align: center;
+}
+
+.season-archive-table > header span:nth-child(2) {
+  text-align: left;
+}
+
+.season-archive-table > article {
+  min-height: 61px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+
+.season-archive-table > article:last-child {
+  border-bottom: 0;
+}
+
+.season-archive-table > article > strong {
+  text-align: center;
+  color: #b9bec5;
+  font-size: 8px;
+}
+
+.season-archive-rank {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  margin: auto;
+  place-items: center;
+  border: 1px solid rgba(214,174,93,.23);
+  color: #d6ae5d;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.season-archive-team {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+}
+
+.season-archive-team > div {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid rgba(214,174,93,.2);
+  color: #d6ae5d;
+  background: #090a0b;
+}
+
+.season-archive-team img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 3px;
+}
+
+.season-archive-team section {
+  min-width: 0;
+}
+
+.season-archive-team strong,
+.season-archive-team span {
+  display: block;
+}
+
+.season-archive-team strong {
+  overflow: hidden;
+  color: #eeeeeb;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.season-archive-team section > span {
+  margin-top: 3px;
+  color: #888f97;
+  font-size: 6px;
+}
+
+.season-archive-points {
+  color: #f0cf83 !important;
+  font-size: 10px !important;
+}
+
+.archive-zone {
+  display: inline-flex !important;
+  width: fit-content;
+  align-items: center;
+  gap: 3px;
+  margin-top: 4px !important;
+  padding: 2px 4px;
+  border: 1px solid;
+  font-size: 5px !important;
+  font-weight: 900;
+}
+
+.archive-zone--promote {
+  border-color: rgba(67,177,103,.3);
+  color: #8edba5 !important;
+}
+
+.archive-zone--stay {
+  border-color: rgba(214,174,93,.25);
+  color: #d7b975 !important;
+}
+
+.archive-zone--relegate {
+  border-color: rgba(204,76,76,.32);
+  color: #e99898 !important;
+}
+
+.season-archive-state {
+  display: flex;
+  min-height: 170px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  color: #d6ae5d;
+  text-align: center;
+}
+
+.season-archive-state strong {
+  color: #f1f1ee;
+  font-size: 9px;
+}
+
+.season-archive-state p {
+  max-width: 320px;
+  margin: 0;
+  color: #9298a0;
+  font-size: 7px;
+  line-height: 1.5;
+}
+
+.season-archive-state--error p {
+  color: #e99b9b;
+}
+
+.season-archive-footer {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+  color: #818890;
+  font-size: 6px;
+}
+
+.season-archive-footer strong {
+  color: #aaaeb4;
+}
+
+.season-archive-spin {
+  animation:
+    season-archive-spin .8s linear infinite;
+}
+
+@keyframes season-archive-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 560px) {
+  .season-archive-panel {
+    padding: 11px;
+  }
+
+  .season-archive-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .season-archive-controls > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .season-archive-summary {
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .season-archive-table--pubg > header,
+  .season-archive-table--pubg > article {
+    grid-template-columns:
+      31px minmax(0,1fr)
+      41px 41px 45px;
+  }
+
+  .season-archive-table--mlbb > header,
+  .season-archive-table--mlbb > article {
+    grid-template-columns:
+      29px minmax(0,1fr)
+      35px 31px 31px 39px 40px;
+  }
+
+  .season-archive-team > div {
+    width: 29px;
+    height: 29px;
+  }
+}

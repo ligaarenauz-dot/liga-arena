@@ -1,0 +1,466 @@
+.admin-season-manager {
+  margin-bottom: 16px;
+  border: 1px solid rgba(214, 174, 93, 0.27);
+  background:
+    radial-gradient(
+      circle at 90% 0,
+      rgba(214, 174, 93, 0.1),
+      transparent 38%
+    ),
+    #0f1113;
+}
+
+.admin-season-toggle {
+  display: flex;
+  width: 100%;
+  min-height: 82px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 0;
+  color: #f4f4f1;
+  background: transparent;
+  cursor: pointer;
+}
+
+.admin-season-toggle > div {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-align: left;
+}
+
+.admin-season-toggle svg {
+  color: #d6ae5d;
+}
+
+.admin-season-toggle span,
+.admin-season-movements > header span,
+.admin-season-blocked header span {
+  display: block;
+  color: #d6ae5d;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.admin-season-toggle strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.admin-season-toggle small {
+  display: block;
+  margin-top: 4px;
+  color: #9298a0;
+  font-size: 7px;
+}
+
+.admin-season-content {
+  padding: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.admin-season-toolbar {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 8px;
+}
+
+.admin-season-toolbar label span {
+  display: block;
+  margin-bottom: 5px;
+  color: #aeb4bc;
+  font-size: 7px;
+}
+
+.admin-season-toolbar input {
+  width: 100%;
+  height: 39px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  outline: none;
+  color: #f0cf83;
+  background: #101215;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.admin-season-toolbar > button {
+  display: flex;
+  align-self: end;
+  min-height: 39px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid rgba(214, 174, 93, 0.3);
+  color: #d6ae5d;
+  background: #101215;
+  font-size: 7px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.admin-season-alert {
+  margin-top: 8px;
+  padding: 9px;
+  border: 1px solid;
+  font-size: 8px;
+}
+
+.admin-season-alert--error {
+  border-color: rgba(204, 76, 76, 0.38);
+  color: #ee9f9f;
+  background: rgba(160, 40, 40, 0.08);
+}
+
+.admin-season-alert--success {
+  border-color: rgba(67, 177, 103, 0.34);
+  color: #98dfad;
+  background: rgba(40, 137, 70, 0.07);
+}
+
+.admin-season-readiness {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 13px;
+  margin-top: 9px;
+  padding: 14px;
+  border: 1px solid rgba(204, 76, 76, 0.28);
+  background: #141619;
+}
+
+.admin-season-readiness--ready {
+  border-color: rgba(214, 174, 93, 0.45);
+  background:
+    linear-gradient(
+      100deg,
+      rgba(214, 174, 93, 0.1),
+      transparent
+    ),
+    #141619;
+}
+
+.admin-season-readiness--activated {
+  border-color: rgba(67, 177, 103, 0.4);
+  background:
+    linear-gradient(
+      100deg,
+      rgba(67, 177, 103, 0.1),
+      transparent
+    ),
+    #141619;
+}
+
+.admin-season-readiness > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-season-readiness > div > svg {
+  flex: 0 0 auto;
+  color: #d6ae5d;
+}
+
+.admin-season-readiness--activated
+  > div
+  > svg {
+  color: #8edba5;
+}
+
+.admin-season-readiness section span,
+.admin-season-readiness section strong {
+  display: block;
+}
+
+.admin-season-readiness section span {
+  color: #d6ae5d;
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.admin-season-readiness section strong {
+  margin-top: 4px;
+  font-size: 11px;
+}
+
+.admin-season-readiness section p {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0 0;
+  color: #a6acb4;
+  font-size: 7px;
+}
+
+.admin-season-readiness > button {
+  display: flex;
+  min-width: 175px;
+  min-height: 39px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  color: #090a0b;
+  background:
+    linear-gradient(
+      135deg,
+      #f1d28e,
+      #b98634
+    );
+  font-size: 7px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-season-readiness > button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.admin-season-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.admin-season-stats article {
+  display: flex;
+  min-height: 70px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  background: #141619;
+  text-align: center;
+}
+
+.admin-season-stats span {
+  color: #9298a0;
+  font-size: 6px;
+  font-weight: 850;
+}
+
+.admin-season-stats strong {
+  color: #f0cf83;
+  font-size: 16px;
+}
+
+.admin-season-stats .promoted svg {
+  color: #8edba5;
+}
+
+.admin-season-stats .relegated svg {
+  color: #ed9d9d;
+}
+
+.admin-season-blocked,
+.admin-season-movements {
+  margin-top: 9px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  background: #141619;
+}
+
+.admin-season-blocked {
+  border-color: rgba(204, 76, 76, 0.26);
+}
+
+.admin-season-blocked > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ed9d9d;
+}
+
+.admin-season-blocked header strong,
+.admin-season-movements > header strong {
+  display: block;
+  margin-top: 3px;
+  color: #f2f2ef;
+  font-size: 9px;
+}
+
+.admin-season-blocked > div,
+.admin-season-movements > div {
+  display: grid;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.admin-season-blocked article {
+  display: grid;
+  grid-template-columns: 100px 1fr 150px;
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid rgba(204, 76, 76, 0.16);
+  background: #101215;
+}
+
+.admin-season-blocked article span {
+  color: #e5c476;
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.admin-season-blocked article strong {
+  font-size: 8px;
+}
+
+.admin-season-blocked article small,
+.admin-season-blocked article p {
+  color: #989ea6;
+  font-size: 6px;
+}
+
+.admin-season-blocked article p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #e09a9a;
+}
+
+.admin-season-movements article {
+  display: grid;
+  grid-template-columns: 30px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  background: #101215;
+}
+
+.admin-season-movements article > svg {
+  color: #d6ae5d;
+}
+
+.admin-season-movements article.movement-promoted > svg {
+  color: #8edba5;
+}
+
+.admin-season-movements article.movement-relegated > svg {
+  color: #ed9d9d;
+}
+
+.admin-season-movements article section span {
+  display: block;
+  color: #d6ae5d;
+  font-size: 6px;
+  font-weight: 900;
+}
+
+.admin-season-movements article section strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 8px;
+}
+
+.admin-season-movements article section small {
+  display: block;
+  margin-top: 3px;
+  color: #9298a0;
+  font-size: 6px;
+}
+
+.admin-season-movements article > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #8f969e;
+  font-size: 7px;
+}
+
+.admin-season-movements article > div strong {
+  color: #f0cf83;
+}
+
+.admin-season-activated {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid rgba(67, 177, 103, 0.3);
+  color: #8edba5;
+  background: rgba(40, 137, 70, 0.065);
+}
+
+.admin-season-activated strong,
+.admin-season-activated span {
+  display: block;
+}
+
+.admin-season-activated strong {
+  font-size: 8px;
+}
+
+.admin-season-activated span {
+  margin-top: 3px;
+  color: #9298a0;
+  font-size: 6px;
+}
+
+.admin-season-empty {
+  display: flex;
+  min-height: 150px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  color: #d6ae5d;
+}
+
+.admin-season-empty strong {
+  color: #f2f2ef;
+  font-size: 9px;
+}
+
+.admin-season-spin {
+  animation:
+    admin-season-spin 800ms linear infinite;
+}
+
+@keyframes admin-season-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 700px) {
+  .admin-season-stats {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .admin-season-readiness {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-season-readiness > button {
+    width: 100%;
+  }
+
+  .admin-season-stats {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .admin-season-blocked article,
+  .admin-season-movements article {
+    grid-template-columns:
+      1fr;
+  }
+
+  .admin-season-movements article > div {
+    margin-top: 3px;
+  }
+}

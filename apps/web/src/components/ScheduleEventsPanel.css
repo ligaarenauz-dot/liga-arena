@@ -1,0 +1,354 @@
+.schedule-events-panel {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f4f4f1;
+  background:
+    radial-gradient(
+      circle at 90% 0,
+      rgba(214, 174, 93, 0.11),
+      transparent 34%
+    ),
+    #0d0f11;
+}
+
+.schedule-events-panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.schedule-events-panel__header span {
+  color: #d6ae5d;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+}
+
+.schedule-events-panel__header h1 {
+  margin: 5px 0 0;
+  font-size: 22px;
+}
+
+.schedule-events-panel__header p {
+  margin: 7px 0 0;
+  color: #9fa5ad;
+  font-size: 9px;
+}
+
+.schedule-events-panel__header > button {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid rgba(214, 174, 93, 0.3);
+  color: #e4c374;
+  background: rgba(214, 174, 93, 0.05);
+  font-size: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.schedule-events-panel__header > button:disabled {
+  opacity: 0.45;
+}
+
+.schedule-events-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #111316;
+}
+
+.schedule-events-filters > div {
+  display: flex;
+  gap: 5px;
+}
+
+.schedule-events-filters button {
+  min-height: 31px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  color: #969ca4;
+  background: transparent;
+  font-size: 7px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.schedule-events-filters button.active {
+  border-color: rgba(214, 174, 93, 0.32);
+  color: #f0cf83;
+  background: rgba(214, 174, 93, 0.07);
+}
+
+.schedule-events-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 11px;
+}
+
+.schedule-event-card {
+  display: grid;
+  grid-template-columns: 155px 1fr 135px;
+  align-items: stretch;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  background: #131518;
+}
+
+.schedule-event-card--relevant {
+  border-color: rgba(214, 174, 93, 0.5);
+  background:
+    linear-gradient(
+      100deg,
+      rgba(214, 174, 93, 0.09),
+      transparent
+    ),
+    #131518;
+}
+
+.schedule-event-card__date {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  color: #d6ae5d;
+  text-align: center;
+}
+
+.schedule-event-card__date strong {
+  color: #f2f2ef;
+  font-size: 9px;
+}
+
+.schedule-event-card__date span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #cbb06f;
+  font-size: 8px;
+}
+
+.schedule-event-card > section {
+  min-width: 0;
+}
+
+.schedule-event-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.schedule-event-card__badges > span {
+  display: flex;
+  min-height: 21px;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #aeb4bc;
+  font-size: 6px;
+  font-weight: 800;
+}
+
+.schedule-game-badge--pubg {
+  color: #ebc76e !important;
+}
+
+.schedule-game-badge--mlbb {
+  color: #c9b0ff !important;
+}
+
+.schedule-relevant-badge {
+  border-color: rgba(214, 174, 93, 0.45) !important;
+  color: #f0cf83 !important;
+}
+
+.schedule-event-card h3 {
+  margin: 8px 0 0;
+  font-size: 13px;
+}
+
+.schedule-event-card > section > p {
+  margin: 5px 0 0;
+  color: #a3a9b1;
+  font-size: 8px;
+}
+
+.schedule-event-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  color: #8e949c;
+  font-size: 7px;
+}
+
+.schedule-event-card__meta strong {
+  color: #d7ba70;
+}
+
+.schedule-event-card > section > small {
+  display: block;
+  margin-top: 7px;
+  color: #8f959d;
+  font-size: 7px;
+  line-height: 1.5;
+}
+
+.schedule-event-card > aside {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+}
+
+.schedule-event-status {
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #aeb4bc;
+  font-size: 7px;
+  font-weight: 850;
+}
+
+.schedule-event-status--live {
+  border-color: rgba(221, 70, 70, 0.45);
+  color: #ff9f9f;
+  background: rgba(180, 42, 42, 0.09);
+}
+
+.schedule-event-status--scheduled {
+  border-color: rgba(214, 174, 93, 0.33);
+  color: #e4c374;
+}
+
+.schedule-event-status--finished {
+  border-color: rgba(67, 177, 103, 0.3);
+  color: #90dca7;
+}
+
+.schedule-event-status--postponed,
+.schedule-event-status--cancelled {
+  color: #e79999;
+}
+
+.schedule-event-card > aside button {
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 0;
+  color: #090a0b;
+  background:
+    linear-gradient(
+      135deg,
+      #f1d28e,
+      #b98634
+    );
+  font-size: 7px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.schedule-events-state {
+  display: flex;
+  min-height: 210px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  color: #d6ae5d;
+  text-align: center;
+}
+
+.schedule-events-state strong {
+  color: #f2f2ef;
+  font-size: 10px;
+}
+
+.schedule-events-state p {
+  max-width: 360px;
+  margin: 0;
+  color: #969ca4;
+  font-size: 8px;
+}
+
+.schedule-events-state--error p {
+  color: #ea9999;
+}
+
+.schedule-events-spin {
+  animation:
+    schedule-events-spin 800ms linear infinite;
+}
+
+@keyframes schedule-events-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 680px) {
+  .schedule-event-card {
+    grid-template-columns: 1fr;
+  }
+
+  .schedule-event-card__date {
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 9px;
+    text-align: left;
+  }
+
+  .schedule-event-card > aside {
+    flex-direction: row;
+  }
+
+  .schedule-event-card > aside > * {
+    flex: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .schedule-events-panel {
+    padding: 11px;
+  }
+
+  .schedule-events-panel__header,
+  .schedule-events-filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .schedule-events-panel__header > button {
+    justify-content: center;
+  }
+
+  .schedule-events-filters > div {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .schedule-events-filters button {
+    padding: 0 5px;
+  }
+}

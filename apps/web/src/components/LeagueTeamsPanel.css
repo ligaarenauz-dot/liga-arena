@@ -1,0 +1,579 @@
+.league-directory,
+.profile-league-card {
+  position: relative;
+  margin-top: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f5f5f2;
+  background:
+    radial-gradient(
+      circle at 90% 0,
+      rgba(214, 174, 93, 0.11),
+      transparent 35%
+    ),
+    #0d0f11;
+}
+
+.league-directory {
+  padding: 16px;
+}
+
+.league-directory__title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.league-directory__title span,
+.profile-league-card__top span {
+  color: #d6ae5d;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+}
+
+.league-directory__title h1,
+.profile-league-card__top h2 {
+  margin: 5px 0 0;
+  color: #f6f6f2;
+}
+
+.league-directory__title h1 {
+  font-size: 22px;
+}
+
+.league-directory__title p {
+  max-width: 480px;
+  margin: 7px 0 0;
+  color: #9fa5ad;
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.league-directory__title > button,
+.profile-league-card__top > button {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid rgba(214, 174, 93, 0.28);
+  color: #e4c374;
+  background: rgba(214, 174, 93, 0.05);
+  cursor: pointer;
+}
+
+.league-directory__title > button {
+  padding: 0 12px;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.league-directory__title > button:disabled,
+.profile-league-card__top > button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.league-game-section {
+  margin-top: 15px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  background: #111316;
+}
+
+.league-game-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.league-game-section__header > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.league-game-section__header svg {
+  color: #d6ae5d;
+}
+
+.league-game-section__header section span {
+  display: block;
+  color: #d6ae5d;
+  font-size: 7px;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+}
+
+.league-game-section__header h2 {
+  margin: 3px 0 0;
+  font-size: 14px;
+}
+
+.league-game-section__header > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #aeb4bc;
+  font-size: 8px;
+}
+
+.league-tier-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin-top: 11px;
+}
+
+.league-tier-column {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.025),
+      transparent
+    ),
+    #15171a;
+}
+
+.league-tier-column > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.league-tier-column > header svg {
+  flex: 0 0 auto;
+  color: #d6ae5d;
+}
+
+.league-tier-column > header section {
+  min-width: 0;
+  flex: 1;
+}
+
+.league-tier-column > header span {
+  display: block;
+  color: #8e949c;
+  font-size: 6px;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+}
+
+.league-tier-column > header h3 {
+  margin: 3px 0 0;
+  color: #f0cf83;
+  font-size: 12px;
+}
+
+.league-tier-column > header > strong {
+  display: grid;
+  width: 27px;
+  height: 27px;
+  place-items: center;
+  border: 1px solid rgba(214, 174, 93, 0.28);
+  color: #e4c374;
+  font-size: 8px;
+}
+
+.league-tier-column > p {
+  min-height: 34px;
+  margin: 9px 0 0;
+  color: #9298a0;
+  font-size: 7px;
+  line-height: 1.5;
+}
+
+.league-tier-teams {
+  display: grid;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.league-team-card {
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  background: #101215;
+}
+
+.league-team-card--current {
+  border-color: rgba(214, 174, 93, 0.52);
+  background:
+    linear-gradient(
+      100deg,
+      rgba(214, 174, 93, 0.09),
+      transparent
+    ),
+    #101215;
+}
+
+.league-team-logo {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid rgba(214, 174, 93, 0.25);
+  color: #d6ae5d;
+  background: #090a0b;
+}
+
+.league-team-logo--large {
+  width: 78px;
+  height: 78px;
+}
+
+.league-team-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 3px;
+}
+
+.league-team-card > section {
+  min-width: 0;
+}
+
+.league-team-card > section > div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.league-team-card h4 {
+  overflow: hidden;
+  margin: 0;
+  color: #eeeeeb;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.league-team-card > section > div span {
+  padding: 2px 4px;
+  border: 1px solid rgba(214, 174, 93, 0.3);
+  color: #e5c475;
+  font-size: 5px;
+  white-space: nowrap;
+}
+
+.league-team-card p,
+.league-team-card small {
+  display: block;
+  overflow: hidden;
+  margin: 3px 0 0;
+  color: #9298a0;
+  font-size: 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.league-team-card > svg {
+  color: #6fcf8c;
+}
+
+.league-tier-empty {
+  display: flex;
+  min-height: 80px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  border: 1px dashed rgba(255, 255, 255, 0.09);
+  color: #777e87;
+  text-align: center;
+}
+
+.league-tier-empty span {
+  max-width: 110px;
+  font-size: 7px;
+  line-height: 1.4;
+}
+
+.league-directory__state {
+  display: flex;
+  min-height: 200px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  color: #d6ae5d;
+  text-align: center;
+}
+
+.league-directory__state strong {
+  color: #f2f2ef;
+  font-size: 10px;
+}
+
+.league-directory__state p {
+  max-width: 350px;
+  margin: 0;
+  color: #e19a9a;
+  font-size: 8px;
+}
+
+.profile-league-card {
+  padding: 15px;
+}
+
+.profile-league-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.profile-league-card__top h2 {
+  font-size: 16px;
+}
+
+.profile-league-card__top > button {
+  width: 38px;
+  padding: 0;
+}
+
+.profile-league-team {
+  display: grid;
+  grid-template-columns: 78px 1fr minmax(125px, auto);
+  align-items: center;
+  gap: 13px;
+  margin-top: 13px;
+  padding: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #131518;
+}
+
+.profile-league-team--assigned {
+  border-color: rgba(214, 174, 93, 0.45);
+  background:
+    linear-gradient(
+      100deg,
+      rgba(214, 174, 93, 0.1),
+      transparent
+    ),
+    #131518;
+}
+
+.profile-league-team > section {
+  min-width: 0;
+}
+
+.profile-league-team__game {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #d6ae5d;
+}
+
+.profile-league-team__game span {
+  font-size: 7px;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+}
+
+.profile-league-team h3 {
+  overflow: hidden;
+  margin: 6px 0 0;
+  font-size: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-league-team__tag {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 3px 6px;
+  border: 1px solid rgba(214, 174, 93, 0.25);
+  color: #e2c171;
+  font-size: 7px;
+}
+
+.profile-league-team__status {
+  display: flex;
+  min-height: 90px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  color: #d6ae5d;
+  text-align: center;
+}
+
+.profile-league-team__status span {
+  color: #969ca4;
+  font-size: 6px;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+}
+
+.profile-league-team__status strong {
+  color: #f0cf83;
+  font-size: 10px;
+}
+
+.profile-league-card__meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.profile-league-card__meta span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  color: #c6cbd1;
+  background: #111316;
+  font-size: 8px;
+}
+
+.profile-league-card__meta strong {
+  color: #d6ae5d;
+  font-size: 6px;
+  text-transform: uppercase;
+}
+
+.profile-league-card__error {
+  margin: 8px 0 0;
+  color: #e99494;
+  font-size: 8px;
+}
+
+.league-panel-spin {
+  animation:
+    league-panel-spin 800ms linear infinite;
+}
+
+@keyframes league-panel-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .league-tier-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .league-tier-column > p {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .league-directory {
+    padding: 11px;
+  }
+
+  .league-directory__title {
+    flex-direction: column;
+  }
+
+  .league-directory__title > button {
+    width: 100%;
+  }
+
+  .league-game-section {
+    padding: 10px;
+  }
+
+  .profile-league-team {
+    grid-template-columns: 64px 1fr;
+  }
+
+  .league-team-logo--large {
+    width: 64px;
+    height: 64px;
+  }
+
+  .profile-league-team__status {
+    grid-column: 1 / -1;
+    min-height: 70px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 0;
+  }
+
+  .profile-league-card__meta {
+    grid-template-columns: 1fr;
+  }
+}
+.profile-team-technical-number {
+  width: fit-content;
+  margin-top: 6px;
+  padding: 4px 7px;
+  border: 1px solid rgba(214, 174, 93, 0.32);
+  color: #9fa5ad;
+  background: rgba(214, 174, 93, 0.055);
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+}
+
+.profile-team-technical-number strong {
+  color: #f0cf83;
+  font-size: 7px;
+}
+.profile-next-season {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid rgba(214, 174, 93, 0.38);
+  color: #d6ae5d;
+  background:
+    linear-gradient(
+      100deg,
+      rgba(214, 174, 93, 0.1),
+      transparent
+    ),
+    #111316;
+}
+
+.profile-next-season > svg {
+  flex: 0 0 auto;
+}
+
+.profile-next-season span,
+.profile-next-season strong,
+.profile-next-season small {
+  display: block;
+}
+
+.profile-next-season span {
+  color: #d6ae5d;
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+}
+
+.profile-next-season strong {
+  margin-top: 3px;
+  color: #f0cf83;
+  font-size: 10px;
+}
+
+.profile-next-season small {
+  margin-top: 4px;
+  color: #9298a0;
+  font-size: 6px;
+}

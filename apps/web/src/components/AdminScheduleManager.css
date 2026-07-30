@@ -1,0 +1,378 @@
+.admin-schedule-manager {
+  margin-bottom: 16px;
+  border: 1px solid rgba(214, 174, 93, 0.25);
+  background:
+    radial-gradient(
+      circle at 90% 0,
+      rgba(214, 174, 93, 0.09),
+      transparent 38%
+    ),
+    #0f1113;
+}
+
+.admin-schedule-toggle {
+  display: flex;
+  width: 100%;
+  min-height: 82px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 0;
+  color: #f4f4f1;
+  background: transparent;
+  cursor: pointer;
+}
+
+.admin-schedule-toggle > div {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-align: left;
+}
+
+.admin-schedule-toggle svg {
+  color: #d6ae5d;
+}
+
+.admin-schedule-toggle span {
+  display: block;
+  color: #d6ae5d;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.admin-schedule-toggle strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.admin-schedule-toggle small {
+  display: block;
+  margin-top: 4px;
+  color: #9298a0;
+  font-size: 7px;
+}
+
+.admin-schedule-content {
+  padding: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.admin-schedule-alert {
+  margin-bottom: 9px;
+  padding: 10px;
+  border: 1px solid;
+  font-size: 8px;
+}
+
+.admin-schedule-alert--error {
+  border-color: rgba(204, 76, 76, 0.35);
+  color: #eea0a0;
+  background: rgba(160, 40, 40, 0.08);
+}
+
+.admin-schedule-alert--success {
+  border-color: rgba(67, 177, 103, 0.32);
+  color: #98dfad;
+  background: rgba(40, 137, 70, 0.07);
+}
+
+.admin-schedule-form,
+.admin-schedule-list {
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  background: #141619;
+}
+
+.admin-schedule-form > header,
+.admin-schedule-list > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.admin-schedule-form header span,
+.admin-schedule-list header span {
+  color: #d6ae5d;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.admin-schedule-form header h3,
+.admin-schedule-list header h3 {
+  margin: 4px 0 0;
+  font-size: 13px;
+}
+
+.admin-schedule-form header > button {
+  display: flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 9px;
+  border: 1px solid rgba(204, 76, 76, 0.3);
+  color: #ee9b9b;
+  background: transparent;
+  font-size: 7px;
+  cursor: pointer;
+}
+
+.admin-schedule-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.admin-schedule-form label > span {
+  display: block;
+  margin-bottom: 5px;
+  color: #bfc4ca;
+  font-size: 7px;
+  font-weight: 750;
+}
+
+.admin-schedule-form label.wide {
+  grid-column: 1 / -1;
+}
+
+.admin-schedule-form input,
+.admin-schedule-form select,
+.admin-schedule-form textarea,
+.admin-schedule-list select {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  outline: none;
+  color: #f4f4f1;
+  background: #101215;
+  font-size: 8px;
+}
+
+.admin-schedule-form input,
+.admin-schedule-form select,
+.admin-schedule-list select {
+  height: 40px;
+  padding: 0 10px;
+}
+
+.admin-schedule-form textarea {
+  min-height: 78px;
+  resize: vertical;
+  padding: 10px;
+}
+
+.admin-schedule-form input:focus,
+.admin-schedule-form select:focus,
+.admin-schedule-form textarea:focus {
+  border-color: rgba(214, 174, 93, 0.58);
+}
+
+.admin-schedule-form option,
+.admin-schedule-list option {
+  color: #f4f4f1;
+  background: #15171a;
+}
+
+.admin-schedule-form > button {
+  display: flex;
+  width: 100%;
+  min-height: 43px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 10px;
+  border: 0;
+  color: #090a0b;
+  background:
+    linear-gradient(
+      135deg,
+      #f1d28e,
+      #b98634
+    );
+  font-size: 8px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-schedule-form > button:disabled {
+  opacity: 0.45;
+}
+
+.admin-schedule-list {
+  margin-top: 11px;
+}
+
+.admin-schedule-list > header > div:last-child {
+  display: flex;
+  gap: 6px;
+}
+
+.admin-schedule-list > header select {
+  min-width: 145px;
+}
+
+.admin-schedule-list > header button {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid rgba(214, 174, 93, 0.25);
+  color: #d6ae5d;
+  background: #101215;
+  cursor: pointer;
+}
+
+.admin-schedule-list > div > article {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  margin-top: 7px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #101215;
+}
+
+.admin-schedule-event-game {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid rgba(214, 174, 93, 0.22);
+  color: #d6ae5d;
+}
+
+.admin-schedule-event-game span {
+  font-size: 6px;
+  font-weight: 850;
+}
+
+.admin-schedule-list article > section {
+  min-width: 0;
+}
+
+.admin-schedule-list article > section > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.admin-schedule-list article > section strong {
+  overflow: hidden;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-schedule-list article > section > div span {
+  padding: 3px 5px;
+  border: 1px solid rgba(214, 174, 93, 0.2);
+  color: #d7b96f;
+  font-size: 6px;
+}
+
+.admin-schedule-list article p {
+  margin: 5px 0 0;
+  color: #989ea6;
+  font-size: 7px;
+}
+
+.admin-schedule-list article small {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  color: #b6bbc2;
+  font-size: 7px;
+}
+
+.admin-schedule-event-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.admin-schedule-event-actions button {
+  display: grid;
+  width: 33px;
+  height: 33px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #d6ae5d;
+  background: #15171a;
+  cursor: pointer;
+}
+
+.admin-schedule-event-actions button:last-child {
+  color: #ed9292;
+}
+
+.admin-schedule-empty {
+  display: flex;
+  min-height: 140px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  color: #d6ae5d;
+}
+
+.admin-schedule-empty strong {
+  color: #f1f1ee;
+  font-size: 9px;
+}
+
+.admin-schedule-spin {
+  animation:
+    admin-schedule-spin 800ms linear infinite;
+}
+
+@keyframes admin-schedule-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-schedule-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-schedule-form label.wide {
+    grid-column: auto;
+  }
+
+  .admin-schedule-form > header,
+  .admin-schedule-list > header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-schedule-list > header > div:last-child {
+    width: 100%;
+  }
+
+  .admin-schedule-list > header select {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .admin-schedule-list > div > article {
+    grid-template-columns: 48px 1fr;
+  }
+
+  .admin-schedule-event-actions {
+    grid-column: 1 / -1;
+  }
+
+  .admin-schedule-event-actions button {
+    flex: 1;
+    width: auto;
+  }
+}

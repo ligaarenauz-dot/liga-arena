@@ -1,0 +1,588 @@
+.admin-mlbb-manager {
+  margin-bottom: 16px;
+  border: 1px solid rgba(214, 174, 93, 0.26);
+  background: #0f1113;
+}
+
+.admin-mlbb-toggle {
+  display: flex;
+  width: 100%;
+  min-height: 82px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  border: 0;
+  color: #f4f4f1;
+  background:
+    radial-gradient(
+      circle at 90% 0,
+      rgba(153, 113, 230, 0.12),
+      transparent 38%
+    );
+  cursor: pointer;
+}
+
+.admin-mlbb-toggle > div {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-align: left;
+}
+
+.admin-mlbb-toggle svg {
+  color: #d6ae5d;
+}
+
+.admin-mlbb-toggle span,
+.admin-mlbb-rounds header span,
+.admin-mlbb-editor header span,
+.admin-mlbb-standings header span {
+  display: block;
+  color: #d6ae5d;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+.admin-mlbb-toggle strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.admin-mlbb-toggle small {
+  display: block;
+  margin-top: 4px;
+  color: #9298a0;
+  font-size: 7px;
+}
+
+.admin-mlbb-content {
+  padding: 14px;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+
+.admin-mlbb-toolbar {
+  display: grid;
+  grid-template-columns: 90px 1fr 40px;
+  gap: 7px;
+}
+
+.admin-mlbb-toolbar input,
+.admin-mlbb-toolbar select,
+.admin-mlbb-settings input,
+.admin-mlbb-settings select {
+  width: 100%;
+  height: 38px;
+  padding: 0 8px;
+  border: 1px solid rgba(255,255,255,.1);
+  outline: none;
+  color: #f0cf83;
+  background: #101215;
+  font-size: 8px;
+}
+
+.admin-mlbb-toolbar button {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(214,174,93,.25);
+  color: #d6ae5d;
+  background: #101215;
+}
+
+.admin-mlbb-settings {
+  display: grid;
+  grid-template-columns:
+    repeat(5,1fr) 120px;
+  gap: 8px;
+  margin-top: 9px;
+  padding: 11px;
+  border: 1px solid rgba(255,255,255,.075);
+  background: #141619;
+}
+
+.admin-mlbb-settings label span {
+  display: block;
+  margin-bottom: 5px;
+  color: #9da3ab;
+  font-size: 6px;
+}
+
+.admin-mlbb-settings > button,
+.admin-mlbb-rounds header > button,
+.admin-mlbb-editor > header > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 38px;
+  border: 0;
+  color: #090a0b;
+  background: linear-gradient(135deg,#f1d28e,#b98634);
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.admin-mlbb-fairness {
+  display: flex;
+  gap: 9px;
+  margin-top: 9px;
+  padding: 11px;
+  border: 1px solid rgba(153,113,230,.25);
+  color: #c1abed;
+  background: rgba(110,76,175,.06);
+}
+
+.admin-mlbb-fairness span,
+.admin-mlbb-fairness strong {
+  display: block;
+}
+
+.admin-mlbb-fairness span {
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.admin-mlbb-fairness strong {
+  margin-top: 3px;
+  color: #f1f1ee;
+  font-size: 9px;
+}
+
+.admin-mlbb-fairness p {
+  margin: 4px 0 0;
+  color: #949aa2;
+  font-size: 7px;
+}
+
+.admin-mlbb-rounds,
+.admin-mlbb-editor,
+.admin-mlbb-standings {
+  margin-top: 9px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.075);
+  background: #141619;
+}
+
+.admin-mlbb-rounds > header,
+.admin-mlbb-editor > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.admin-mlbb-rounds h3,
+.admin-mlbb-editor h3,
+.admin-mlbb-standings h3 {
+  margin: 4px 0 0;
+  font-size: 12px;
+}
+
+.admin-mlbb-round-list {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.admin-mlbb-round-list article {
+  display: grid;
+  grid-template-columns: 1fr 34px;
+  border: 1px solid rgba(255,255,255,.07);
+  background: #101215;
+}
+
+.admin-mlbb-round-list article.active {
+  border-color: rgba(214,174,93,.45);
+}
+
+.admin-mlbb-round-list button {
+  border: 0;
+  color: #f1f1ee;
+  background: transparent;
+}
+
+.admin-mlbb-round-list article > button:first-child {
+  padding: 9px;
+  text-align: left;
+}
+
+.admin-mlbb-round-list strong,
+.admin-mlbb-round-list span,
+.admin-mlbb-round-list small {
+  display: block;
+}
+
+.admin-mlbb-round-list span {
+  margin-top: 3px;
+  color: #d6ae5d;
+  font-size: 6px;
+}
+
+.admin-mlbb-round-list small {
+  margin-top: 4px;
+  color: #8f959d;
+  font-size: 6px;
+}
+
+.admin-mlbb-round-list article > button:last-child {
+  color: #ec9292;
+  border-left: 1px solid rgba(255,255,255,.07);
+}
+
+.admin-mlbb-bye {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 9px;
+  padding: 9px;
+  border: 1px solid rgba(112,143,205,.24);
+  color: #a8bee9;
+  background: rgba(80,103,154,.07);
+}
+
+.admin-mlbb-bye span {
+  display: block;
+  font-size: 6px;
+  font-weight: 900;
+}
+
+.admin-mlbb-bye strong {
+  display: block;
+  margin-top: 3px;
+  color: #f1f1ee;
+  font-size: 8px;
+}
+
+.admin-mlbb-match-list {
+  display: grid;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.admin-mlbb-match-list > article {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr 38px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,.07);
+  background: #101215;
+}
+
+.admin-mlbb-team span,
+.admin-mlbb-team strong,
+.admin-mlbb-team small {
+  display: block;
+}
+
+.admin-mlbb-team span {
+  color: #d6ae5d;
+  font-size: 6px;
+  font-weight: 900;
+}
+
+.admin-mlbb-team strong {
+  margin-top: 3px;
+  font-size: 9px;
+}
+
+.admin-mlbb-team small {
+  margin-top: 3px;
+  color: #8f959d;
+  font-size: 6px;
+}
+
+.admin-mlbb-team--right {
+  text-align: right;
+}
+
+.admin-mlbb-score {
+  display: grid;
+  grid-template-columns: 1fr 15px 1fr;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-mlbb-score input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid rgba(214,174,93,.25);
+  outline: none;
+  color: #f0cf83;
+  text-align: center;
+  background: #15171a;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.admin-mlbb-score span {
+  text-align: center;
+  color: #d6ae5d;
+}
+
+.admin-mlbb-match-list article > button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 0;
+  color: #090a0b;
+  background: linear-gradient(135deg,#f1d28e,#b98634);
+}
+
+.admin-mlbb-standings > div {
+  display: grid;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.admin-mlbb-standings article {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid rgba(255,255,255,.06);
+  background: #101215;
+}
+
+.admin-mlbb-standings article > span {
+  color: #d6ae5d;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.admin-mlbb-standings section strong,
+.admin-mlbb-standings section small {
+  display: block;
+}
+
+.admin-mlbb-standings section strong {
+  font-size: 8px;
+}
+
+.admin-mlbb-standings section small {
+  margin-top: 3px;
+  color: #8f959d;
+  font-size: 6px;
+}
+
+.admin-mlbb-standings article > div {
+  display: flex;
+  gap: 9px;
+  color: #9ca2aa;
+  font-size: 7px;
+}
+
+.admin-mlbb-standings article > div strong {
+  color: #f0cf83;
+}
+
+.admin-mlbb-alert {
+  margin-top: 8px;
+  padding: 9px;
+  border: 1px solid;
+  font-size: 8px;
+}
+
+.admin-mlbb-alert--error {
+  border-color: rgba(204,76,76,.35);
+  color: #ec9a9a;
+}
+
+.admin-mlbb-alert--success {
+  border-color: rgba(67,177,103,.32);
+  color: #91dca7;
+}
+
+.admin-mlbb-empty {
+  display: flex;
+  min-height: 150px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  color: #d6ae5d;
+  text-align: center;
+}
+
+.admin-mlbb-empty--small {
+  min-height: 90px;
+}
+
+.admin-mlbb-spin {
+  animation: admin-mlbb-spin .8s linear infinite;
+}
+
+@keyframes admin-mlbb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 650px) {
+  .admin-mlbb-settings,
+  .admin-mlbb-match-list > article {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-mlbb-round-list {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-mlbb-team--right {
+    text-align: left;
+  }
+
+  .admin-mlbb-score {
+    max-width: 150px;
+  }
+}
+.admin-mlbb-finalization {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 9px;
+  padding: 13px;
+  border: 1px solid rgba(214,174,93,.33);
+  background:
+    linear-gradient(
+      100deg,
+      rgba(214,174,93,.08),
+      transparent
+    ),
+    #141619;
+}
+
+.admin-mlbb-finalization--done {
+  border-color:
+    rgba(67,177,103,.36);
+
+  background:
+    linear-gradient(
+      100deg,
+      rgba(67,177,103,.08),
+      transparent
+    ),
+    #141619;
+}
+
+.admin-mlbb-finalization > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #d6ae5d;
+}
+
+.admin-mlbb-finalization span {
+  display: block;
+  color: #d6ae5d;
+  font-size: 6px;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+.admin-mlbb-finalization strong {
+  display: block;
+  margin-top: 3px;
+  color: #f2f2ef;
+  font-size: 10px;
+}
+
+.admin-mlbb-finalization p {
+  margin: 4px 0 0;
+  color: #9298a0;
+  font-size: 7px;
+}
+
+.admin-mlbb-finalization > button {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 0;
+  color: #090a0b;
+  background:
+    linear-gradient(
+      135deg,
+      #f1d28e,
+      #b98634
+    );
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.admin-mlbb-finalization > button:disabled {
+  opacity: .35;
+}
+
+.admin-mlbb-finalized-badge {
+  display: flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 11px;
+  border: 1px solid
+    rgba(67,177,103,.32);
+  color: #91dca7;
+  font-size: 7px;
+  font-weight: 900;
+}
+
+@media (max-width: 850px) {
+  .admin-mlbb-settings {
+    grid-template-columns:
+      repeat(3,1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .admin-mlbb-finalization {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-mlbb-finalization > button,
+  .admin-mlbb-finalized-badge {
+    width: 100%;
+    justify-content: center;
+  }
+}
+.admin-mlbb-round-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.admin-mlbb-round-actions
+  .admin-mlbb-notify-button {
+  min-height: 38px;
+  padding: 0 11px;
+  border: 1px solid rgba(214,174,93,.35);
+  color: #e7c77c;
+  background: rgba(214,174,93,.06);
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.admin-mlbb-round-actions
+  .admin-mlbb-notify-button:disabled {
+  opacity: .45;
+}
+
+@media (max-width: 560px) {
+  .admin-mlbb-round-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .admin-mlbb-round-actions > button {
+    width: 100%;
+  }
+}
