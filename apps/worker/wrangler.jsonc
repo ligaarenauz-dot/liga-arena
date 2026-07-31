@@ -11,7 +11,9 @@
                  "MANDATORY_CHANNEL_TITLES":  "@liga_arena",
                  "YOUTUBE_URL":  "https://www.youtube.com/@LigaArenauz",
                  "INSTAGRAM_URL":  "https://www.instagram.com/ligaarena.uz",
-                 "TWITCH_URL":  ""
+                 "TWITCH_URL":  "",
+                 "PUBG_MIN_AGE":  "16",
+                 "MLBB_MIN_AGE":  "16"
              },
     "d1_databases":  [
                          {

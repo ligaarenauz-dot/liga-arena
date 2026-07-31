@@ -1,4 +1,7 @@
 import {
+  handleTournamentRequest,
+} from "./modules/tournament-router.js";
+import {
   getTelegramChannelStatus,
   handleTelegramWebhook,
 } from "./modules/telegram.js";
@@ -290,6 +293,13 @@ export default {
             "/api/health",
             "/api/db-test",
             "/api/seasons/current",
+            "/api/eligibility/rules",
+            "/api/schedule",
+            "/api/standings",
+            "/api/competition/standings",
+            "/api/mlbb/standings",
+            "/api/archive/seasons",
+            "/api/archive/standings",
             "/api/teams",
             "/api/teams/:teamId",
             "POST /api/teams",
@@ -370,6 +380,18 @@ export default {
             env,
           ),
         );
+      }
+
+      const tournamentResponse =
+        await handleTournamentRequest(
+          request,
+          env,
+          url,
+          readJsonBody,
+        );
+
+      if (tournamentResponse) {
+        return tournamentResponse;
       }
 
       if (
