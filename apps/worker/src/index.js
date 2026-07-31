@@ -15,10 +15,12 @@ import {
 } from "./modules/seasons.js";
 
 import {
+  addTeamMember,
   checkGameId,
   createTeam,
   getTeamById,
   listTeams,
+  removeTeamMember,
 } from "./modules/teams.js";
 
 import {
@@ -237,6 +239,8 @@ export default {
             "/api/teams",
             "/api/teams/:teamId",
             "POST /api/teams",
+            "POST /api/teams/:teamId/members",
+            "DELETE /api/teams/:teamId/members/:memberId",
             "/api/uploads/team-logo",
             "/uploads/team-logos/:filename",
           ],
@@ -351,6 +355,71 @@ export default {
         );
       }
 
+      const addMemberMatch =
+        url.pathname.match(
+          /^\/api\/teams\/([^/]+)\/members$/,
+        );
+
+      if (
+        request.method ===
+          "POST" &&
+        addMemberMatch
+      ) {
+        const payload =
+          await readJsonBody(
+            request,
+          );
+
+        const team =
+          await addTeamMember(
+            env,
+            decodeURIComponent(
+              addMemberMatch[1],
+            ),
+            payload,
+          );
+
+        return jsonResponse(
+          {
+            message:
+              "O‘yinchi jamoaga qo‘shildi.",
+
+            team,
+          },
+          201,
+        );
+      }
+
+      const removeMemberMatch =
+        url.pathname.match(
+          /^\/api\/teams\/([^/]+)\/members\/([^/]+)$/,
+        );
+
+      if (
+        request.method ===
+          "DELETE" &&
+        removeMemberMatch
+      ) {
+        const team =
+          await removeTeamMember(
+            env,
+
+            decodeURIComponent(
+              removeMemberMatch[1],
+            ),
+
+            decodeURIComponent(
+              removeMemberMatch[2],
+            ),
+          );
+
+        return jsonResponse({
+          message:
+            "O‘yinchi tarkibdan olib tashlandi.",
+
+          team,
+        });
+      }
       /*
        * Bu route generic teamId route
        * tomonidan ushlanmasligi kerak.

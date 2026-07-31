@@ -1088,6 +1088,527 @@ export async function createTeam(
   );
 }
 
+function normalizeRosterRole(
+  value,
+) {
+  const role =
+    cleanText(value)
+      .toUpperCase();
+
+  if (
+    ![
+      "MAIN",
+      "RESERVE",
+    ].includes(role)
+  ) {
+    throw new ApiError(
+      "O‘yinchi roli MAIN yoki RESERVE bo‘lishi kerak.",
+      400,
+      "INVALID_MEMBER_ROLE",
+    );
+  }
+
+  return role;
+}
+
+async function getWritableRosterTeam(
+  database,
+  teamId,
+) {
+  const normalizedTeamId =
+    cleanText(teamId);
+
+  const team =
+    await queryFirst(
+      database,
+      `
+        SELECT
+          id,
+          season,
+          game,
+          status
+
+        FROM teams
+
+        WHERE id = ?
+
+        LIMIT 1
+      `,
+      [
+        normalizedTeamId,
+      ],
+    );
+
+  if (!team) {
+    throw new ApiError(
+      "Jamoa topilmadi.",
+      404,
+      "TEAM_NOT_FOUND",
+    );
+  }
+
+  if (
+    ![
+      "DRAFT",
+      "PENDING_CONFIRMATION",
+    ].includes(team.status)
+  ) {
+    throw new ApiError(
+      "Ushbu jamoa tarkibini hozir o‘zgartirib bo‘lmaydi.",
+      409,
+      "TEAM_ROSTER_LOCKED",
+    );
+  }
+
+  return team;
+}
+
+async function getRosterCounts(
+  database,
+  teamId,
+) {
+  const row =
+    await queryFirst(
+      database,
+      `
+        SELECT
+          COUNT(*)
+            AS total,
+
+          COALESCE(
+            SUM(
+              CASE
+                WHEN role IN (
+                  'CAPTAIN',
+                  'MAIN'
+                )
+                  THEN 1
+                ELSE 0
+              END
+            ),
+            0
+          )
+            AS "mainCount",
+
+          COALESCE(
+            SUM(
+              CASE
+                WHEN role = 'RESERVE'
+                  THEN 1
+                ELSE 0
+              END
+            ),
+            0
+          )
+            AS "reserveCount",
+
+          COALESCE(
+            SUM(
+              CASE
+                WHEN confirmation_status =
+                  'CONFIRMED'
+                  THEN 1
+                ELSE 0
+              END
+            ),
+            0
+          )
+            AS "confirmedCount"
+
+        FROM team_members
+
+        WHERE team_id = ?
+      `,
+      [
+        teamId,
+      ],
+    );
+
+  return {
+    total:
+      Number(
+        row?.total || 0,
+      ),
+
+    mainCount:
+      Number(
+        row?.mainCount || 0,
+      ),
+
+    reserveCount:
+      Number(
+        row?.reserveCount || 0,
+      ),
+
+    confirmedCount:
+      Number(
+        row?.confirmedCount || 0,
+      ),
+  };
+}
+
+export async function addTeamMember(
+  env,
+  teamId,
+  payload = {},
+) {
+  const database =
+    requireDatabase(env);
+
+  if (
+    !payload ||
+    typeof payload !==
+      "object" ||
+    Array.isArray(payload)
+  ) {
+    throw new ApiError(
+      "So‘rov ma’lumotlari noto‘g‘ri.",
+      400,
+      "INVALID_JSON_BODY",
+    );
+  }
+
+  const team =
+    await getWritableRosterTeam(
+      database,
+      teamId,
+    );
+
+  const role =
+    normalizeRosterRole(
+      payload.role,
+    );
+
+  const telegramId =
+    normalizeTelegramId(
+      payload.telegramId,
+    );
+
+  const fullName =
+    validateFullName(
+      payload.fullName,
+    );
+
+  const birthDate =
+    validateBirthDate(
+      payload.birthDate,
+      env,
+      team.game,
+    );
+
+  const region =
+    validateRegion(
+      payload.region,
+    );
+
+  const phone =
+    normalizePhone(
+      payload.phone,
+    );
+
+  const gameUserId =
+    normalizeNumericId(
+      payload.gameUserId,
+
+      team.game === "PUBG"
+        ? "PUBG ID"
+        : "Mobile Legends User ID",
+    );
+
+  const serverId =
+    team.game === "MLBB"
+      ? normalizeNumericId(
+          payload.serverId,
+          "Server / Zone ID",
+        )
+      : "";
+
+  const nickname =
+    validateNickname(
+      payload.nickname,
+    );
+
+  const username =
+    cleanText(
+      payload.username,
+    ).replace(
+      /^@/,
+      "",
+    );
+
+  await ensureUniquePlayer(
+    database,
+    {
+      season:
+        team.season,
+
+      game:
+        team.game,
+
+      gameUserId,
+      serverId,
+      telegramId,
+    },
+  );
+
+  const counts =
+    await getRosterCounts(
+      database,
+      team.id,
+    );
+
+  const limits =
+    getTeamLimits(
+      team.game,
+    );
+
+  if (
+    counts.total >=
+    limits.total
+  ) {
+    throw new ApiError(
+      "Jamoa tarkibi to‘lgan.",
+      409,
+      "TEAM_CAPACITY_REACHED",
+    );
+  }
+
+  if (
+    role === "MAIN" &&
+    counts.mainCount >=
+      limits.main
+  ) {
+    throw new ApiError(
+      `Asosiy tarkibda ko‘pi bilan ${limits.main} o‘yinchi bo‘lishi mumkin.`,
+      409,
+      "MAIN_CAPACITY_REACHED",
+    );
+  }
+
+  if (
+    role === "RESERVE" &&
+    counts.reserveCount >=
+      limits.reserve
+  ) {
+    throw new ApiError(
+      `Zaxirada ko‘pi bilan ${limits.reserve} o‘yinchi bo‘lishi mumkin.`,
+      409,
+      "RESERVE_CAPACITY_REACHED",
+    );
+  }
+
+  const memberId =
+    crypto.randomUUID();
+
+  const now =
+    new Date()
+      .toISOString();
+
+  const insertMember =
+    database
+      .prepare(
+        `
+          INSERT INTO team_members (
+            id,
+            team_id,
+            season,
+            game,
+            telegram_id,
+            first_name,
+            full_name,
+            birth_date,
+            region,
+            phone,
+            username,
+            game_user_id,
+            server_id,
+            nickname,
+            role,
+            confirmation_status,
+            created_at
+          )
+          VALUES (
+            ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+            'PENDING',
+            ?
+          )
+        `,
+      )
+      .bind(
+        memberId,
+        team.id,
+        team.season,
+        team.game,
+        telegramId,
+        fullName,
+        fullName,
+        birthDate,
+        region,
+        phone,
+        username,
+        gameUserId,
+        serverId,
+        nickname,
+        role,
+        now,
+      );
+
+  const updateTeam =
+    database
+      .prepare(
+        `
+          UPDATE teams
+
+          SET
+            status =
+              'PENDING_CONFIRMATION',
+
+            updated_at = ?
+
+          WHERE id = ?
+        `,
+      )
+      .bind(
+        now,
+        team.id,
+      );
+
+  try {
+    await database.batch([
+      insertMember,
+      updateTeam,
+    ]);
+  } catch (error) {
+    throwCreateDatabaseError(
+      error,
+    );
+  }
+
+  return getTeamById(
+    env,
+    team.id,
+  );
+}
+
+export async function removeTeamMember(
+  env,
+  teamId,
+  memberId,
+) {
+  const database =
+    requireDatabase(env);
+
+  const team =
+    await getWritableRosterTeam(
+      database,
+      teamId,
+    );
+
+  const normalizedMemberId =
+    cleanText(memberId);
+
+  const member =
+    await queryFirst(
+      database,
+      `
+        SELECT
+          id,
+          role
+
+        FROM team_members
+
+        WHERE
+          id = ?
+          AND team_id = ?
+
+        LIMIT 1
+      `,
+      [
+        normalizedMemberId,
+        team.id,
+      ],
+    );
+
+  if (!member) {
+    throw new ApiError(
+      "O‘yinchi topilmadi.",
+      404,
+      "MEMBER_NOT_FOUND",
+    );
+  }
+
+  if (
+    member.role ===
+    "CAPTAIN"
+  ) {
+    throw new ApiError(
+      "Jamoa sardorini tarkibdan olib tashlab bo‘lmaydi.",
+      409,
+      "CAPTAIN_CANNOT_BE_REMOVED",
+    );
+  }
+
+  const now =
+    new Date()
+      .toISOString();
+
+  const deleteMember =
+    database
+      .prepare(
+        `
+          DELETE FROM team_members
+
+          WHERE
+            id = ?
+            AND team_id = ?
+        `,
+      )
+      .bind(
+        member.id,
+        team.id,
+      );
+
+  const updateTeam =
+    database
+      .prepare(
+        `
+          UPDATE teams
+
+          SET
+            status =
+              CASE
+                WHEN (
+                  SELECT COUNT(*)
+                  FROM team_members
+                  WHERE team_id = ?
+                ) > 1
+                  THEN 'PENDING_CONFIRMATION'
+
+                ELSE 'DRAFT'
+              END,
+
+            updated_at = ?
+
+          WHERE id = ?
+        `,
+      )
+      .bind(
+        team.id,
+        now,
+        team.id,
+      );
+
+  await database.batch([
+    deleteMember,
+    updateTeam,
+  ]);
+
+  return getTeamById(
+    env,
+    team.id,
+  );
+}
+
 export async function listTeams(
   env,
   searchParams,
