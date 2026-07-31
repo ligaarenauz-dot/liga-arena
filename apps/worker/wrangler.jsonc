@@ -1,24 +1,31 @@
 {
-	"name": "liga-arena-worker",
-	"main": "src/index.js",
-	"compatibility_date": "2026-07-31",
-	"workers_dev": true,
-	"vars": {
-	  "BOT_USERNAME": "ligaarena_bot"
-	},
-	"d1_databases": [
-		{
-			"binding": "DB",
-			"database_name": "liga-arena-db",
-			"database_id": "6e07fb48-84bd-492f-87af-e4dd8262e563",
-			"migrations_dir": "migrations"
-		}
-	],
-	"kv_namespaces": [
-		{
-			"binding": "TEAM_LOGOS",
-			"id": "82f098f96e0e4041a316cce7abfb2e76",
-			"remote": true
-		}
-	]
+    "name":  "liga-arena-worker",
+    "main":  "src/index.js",
+    "compatibility_date":  "2026-07-31",
+    "workers_dev":  true,
+    "vars":  {
+                 "BOT_USERNAME":  "ligaarena_bot",
+                 "FRONTEND_URL":  "https://liga-arena-uz.pages.dev",
+                 "MANDATORY_CHANNEL_IDS":  "@liga_arena",
+                 "MANDATORY_CHANNEL_URLS":  "https://t.me/liga_arena",
+                 "MANDATORY_CHANNEL_TITLES":  "@liga_arena",
+                 "YOUTUBE_URL":  "https://www.youtube.com/@LigaArenauz",
+                 "INSTAGRAM_URL":  "https://www.instagram.com/ligaarena.uz",
+                 "TWITCH_URL":  ""
+             },
+    "d1_databases":  [
+                         {
+                             "binding":  "DB",
+                             "database_name":  "liga-arena-db",
+                             "database_id":  "6e07fb48-84bd-492f-87af-e4dd8262e563",
+                             "migrations_dir":  "migrations"
+                         }
+                     ],
+    "kv_namespaces":  [
+                          {
+                              "binding":  "TEAM_LOGOS",
+                              "id":  "82f098f96e0e4041a316cce7abfb2e76",
+                              "remote":  true
+                          }
+                      ]
 }

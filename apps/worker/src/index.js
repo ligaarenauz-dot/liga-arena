@@ -1,4 +1,8 @@
 import {
+  getTelegramChannelStatus,
+  handleTelegramWebhook,
+} from "./modules/telegram.js";
+import {
   ApiError,
   corsHeaders,
   errorResponse,
@@ -32,6 +36,15 @@ import {
   getTeamLogo,
   uploadTeamLogo,
 } from "./modules/uploads.js";
+import {
+  approveAdminTeam,
+  assignAdminTeamLeague,
+  getAdminStats,
+  getAdminTeam,
+  listAdminTeams,
+  rejectAdminTeam,
+  requireAdmin,
+} from "./modules/admin.js";
 
 const MAX_JSON_BODY_BYTES =
   64 * 1024;
@@ -224,6 +237,42 @@ export default {
     try {
       if (
         request.method ===
+          "POST" &&
+        url.pathname ===
+          "/telegram/webhook"
+      ) {
+        return await handleTelegramWebhook(
+          request,
+          env,
+        );
+      }
+
+      if (
+        request.method ===
+          "GET" &&
+        url.pathname ===
+          "/telegram/webhook"
+      ) {
+        return jsonResponse({
+          healthy: true,
+
+          service:
+            "Liga Arena Telegram webhook",
+
+          configured:
+            Boolean(
+              env.BOT_TOKEN &&
+              env.TELEGRAM_WEBHOOK_SECRET &&
+              env.FRONTEND_URL,
+            ),
+
+          frontendUrl:
+            env.FRONTEND_URL || "",
+        });
+      }
+
+      if (
+        request.method ===
           "GET" &&
         url.pathname === "/"
       ) {
@@ -323,6 +372,182 @@ export default {
         );
       }
 
+      if (
+        url.pathname.startsWith(
+          "/api/admin/",
+        )
+      ) {
+        requireAdmin(
+          request,
+          env,
+        );
+      }
+
+      if (
+        request.method ===
+          "GET" &&
+        url.pathname ===
+          "/api/admin/stats"
+      ) {
+        return jsonResponse({
+          stats:
+            await getAdminStats(
+              env,
+            ),
+        });
+      }
+
+      if (
+        request.method ===
+          "GET" &&
+        url.pathname ===
+          "/api/admin/channel-status"
+      ) {
+        return jsonResponse(
+          await getTelegramChannelStatus(
+            env,
+          ),
+        );
+      }
+
+      if (
+        request.method ===
+          "GET" &&
+        url.pathname ===
+          "/api/admin/teams"
+      ) {
+        return jsonResponse({
+          teams:
+            await listAdminTeams(
+              env,
+              url.searchParams,
+            ),
+        });
+      }
+
+      const adminApproveMatch =
+        url.pathname.match(
+          /^\/api\/admin\/teams\/([^/]+)\/approve$/,
+        );
+
+      if (
+        request.method ===
+          "POST" &&
+        adminApproveMatch
+      ) {
+        const payload =
+          await readJsonBody(
+            request,
+          );
+
+        const result =
+          await approveAdminTeam(
+            env,
+
+            decodeURIComponent(
+              adminApproveMatch[1],
+            ),
+
+            payload,
+          );
+
+        return jsonResponse({
+          message:
+            "Jamoa tasdiqlandi.",
+
+          ...result,
+        });
+      }
+
+      const adminRejectMatch =
+        url.pathname.match(
+          /^\/api\/admin\/teams\/([^/]+)\/reject$/,
+        );
+
+      if (
+        request.method ===
+          "POST" &&
+        adminRejectMatch
+      ) {
+        const payload =
+          await readJsonBody(
+            request,
+          );
+
+        const result =
+          await rejectAdminTeam(
+            env,
+
+            decodeURIComponent(
+              adminRejectMatch[1],
+            ),
+
+            payload,
+          );
+
+        return jsonResponse({
+          message:
+            "Jamoa rad etildi.",
+
+          ...result,
+        });
+      }
+
+      const adminLeagueMatch =
+        url.pathname.match(
+          /^\/api\/admin\/teams\/([^/]+)\/league$/,
+        );
+
+      if (
+        request.method ===
+          "POST" &&
+        adminLeagueMatch
+      ) {
+        const payload =
+          await readJsonBody(
+            request,
+          );
+
+        const result =
+          await assignAdminTeamLeague(
+            env,
+
+            decodeURIComponent(
+              adminLeagueMatch[1],
+            ),
+
+            payload,
+          );
+
+        return jsonResponse({
+          message:
+            "Jamoa liga darajasiga biriktirildi.",
+
+          ...result,
+        });
+      }
+
+      const adminTeamMatch =
+        url.pathname.match(
+          /^\/api\/admin\/teams\/([^/]+)$/,
+        );
+
+      if (
+        request.method ===
+          "GET" &&
+        adminTeamMatch
+      ) {
+        return jsonResponse({
+          team:
+            await getAdminTeam(
+              env,
+
+              decodeURIComponent(
+                adminTeamMatch[1],
+              ),
+            ),
+        });
+      }
       if (
         request.method ===
           "GET" &&
