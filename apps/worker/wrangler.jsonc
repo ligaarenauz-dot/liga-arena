@@ -1,0 +1,21 @@
+{
+	"name": "liga-arena-worker",
+	"main": "src/index.js",
+	"compatibility_date": "2026-07-31",
+	"workers_dev": true,
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "liga-arena-db",
+			"database_id": "6e07fb48-84bd-492f-87af-e4dd8262e563",
+			"migrations_dir": "migrations"
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "TEAM_LOGOS",
+			"id": "82f098f96e0e4041a316cce7abfb2e76",
+			"remote": true
+		}
+	]
+}

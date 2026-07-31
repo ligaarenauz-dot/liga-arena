@@ -87,3 +87,7 @@ scripts/*combined-season*
 scripts/start-integration-api.ps1
 scripts/stop-integration-api.ps1
 scripts/show-integration-routes.ps1
+.wrangler/
+**/.wrangler/
+.dev.vars
+**/.dev.vars
