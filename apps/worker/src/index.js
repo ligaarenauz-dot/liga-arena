@@ -17,10 +17,15 @@ import {
 import {
   addTeamMember,
   checkGameId,
+  confirmMemberInvite,
+  createMemberInvite,
   createTeam,
+  getInvitePreview,
   getTeamById,
   listTeams,
+  rejectMemberInvite,
   removeTeamMember,
+  submitTeam,
 } from "./modules/teams.js";
 
 import {
@@ -241,6 +246,11 @@ export default {
             "POST /api/teams",
             "POST /api/teams/:teamId/members",
             "DELETE /api/teams/:teamId/members/:memberId",
+            "POST /api/teams/:teamId/members/:memberId/invite",
+            "GET /api/invites/:token",
+            "POST /api/invites/:token/confirm",
+            "POST /api/invites/:token/reject",
+            "POST /api/teams/:teamId/submit",
             "/api/uploads/team-logo",
             "/uploads/team-logos/:filename",
           ],
@@ -353,6 +363,138 @@ export default {
           },
           201,
         );
+      }
+
+      const createInviteMatch =
+        url.pathname.match(
+          /^\/api\/teams\/([^/]+)\/members\/([^/]+)\/invite$/,
+        );
+
+      if (
+        request.method ===
+          "POST" &&
+        createInviteMatch
+      ) {
+        const result =
+          await createMemberInvite(
+            env,
+
+            decodeURIComponent(
+              createInviteMatch[1],
+            ),
+
+            decodeURIComponent(
+              createInviteMatch[2],
+            ),
+          );
+
+        return jsonResponse(
+          {
+            message:
+              "Tasdiqlash havolasi yaratildi.",
+
+            ...result,
+          },
+          201,
+        );
+      }
+
+      const confirmInviteMatch =
+        url.pathname.match(
+          /^\/api\/invites\/([^/]+)\/confirm$/,
+        );
+
+      if (
+        request.method ===
+          "POST" &&
+        confirmInviteMatch
+      ) {
+        const payload =
+          await readJsonBody(
+            request,
+          );
+
+        return jsonResponse(
+          await confirmMemberInvite(
+            env,
+
+            decodeURIComponent(
+              confirmInviteMatch[1],
+            ),
+
+            payload,
+          ),
+        );
+      }
+
+      const rejectInviteMatch =
+        url.pathname.match(
+          /^\/api\/invites\/([^/]+)\/reject$/,
+        );
+
+      if (
+        request.method ===
+          "POST" &&
+        rejectInviteMatch
+      ) {
+        return jsonResponse(
+          await rejectMemberInvite(
+            env,
+
+            decodeURIComponent(
+              rejectInviteMatch[1],
+            ),
+          ),
+        );
+      }
+
+      const invitePreviewMatch =
+        url.pathname.match(
+          /^\/api\/invites\/([^/]+)$/,
+        );
+
+      if (
+        request.method ===
+          "GET" &&
+        invitePreviewMatch
+      ) {
+        return jsonResponse({
+          invite:
+            await getInvitePreview(
+              env,
+
+              decodeURIComponent(
+                invitePreviewMatch[1],
+              ),
+            ),
+        });
+      }
+
+      const submitTeamMatch =
+        url.pathname.match(
+          /^\/api\/teams\/([^/]+)\/submit$/,
+        );
+
+      if (
+        request.method ===
+          "POST" &&
+        submitTeamMatch
+      ) {
+        const team =
+          await submitTeam(
+            env,
+
+            decodeURIComponent(
+              submitTeamMatch[1],
+            ),
+          );
+
+        return jsonResponse({
+          message:
+            "Jamoa admin tekshiruviga yuborildi.",
+
+          team,
+        });
       }
 
       const addMemberMatch =

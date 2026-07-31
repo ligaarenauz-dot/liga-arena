@@ -1609,6 +1609,937 @@ export async function removeTeamMember(
   );
 }
 
+function normalizeInviteToken(
+  value,
+) {
+  const token =
+    cleanText(value)
+      .toLowerCase();
+
+  if (
+    !/^[a-f0-9]{32}$/.test(
+      token,
+    )
+  ) {
+    throw new ApiError(
+      "Tasdiqlash havolasi topilmadi.",
+      404,
+      "INVITE_NOT_FOUND",
+    );
+  }
+
+  return token;
+}
+
+function createInviteToken() {
+  const bytes =
+    new Uint8Array(16);
+
+  crypto.getRandomValues(
+    bytes,
+  );
+
+  return Array.from(bytes)
+    .map(
+      (value) =>
+        value
+          .toString(16)
+          .padStart(2, "0"),
+    )
+    .join("");
+}
+
+function normalizeBotUsername(
+  value,
+) {
+  const username =
+    cleanText(value)
+      .replace(
+        /^@/,
+        "",
+      );
+
+  if (
+    !/^[A-Za-z0-9_]{5,32}$/.test(
+      username,
+    )
+  ) {
+    throw new ApiError(
+      "Bot username sozlanmagan.",
+      500,
+      "BOT_USERNAME_NOT_CONFIGURED",
+    );
+  }
+
+  return username;
+}
+
+async function getInviteRecord(
+  database,
+  rawToken,
+) {
+  const token =
+    normalizeInviteToken(
+      rawToken,
+    );
+
+  return queryFirst(
+    database,
+    `
+      SELECT
+        mi.id,
+        mi.team_id
+          AS "teamId",
+
+        mi.member_id
+          AS "memberId",
+
+        mi.token,
+        mi.status,
+
+        mi.expires_at
+          AS "expiresAt",
+
+        mi.created_at
+          AS "createdAt",
+
+        mi.updated_at
+          AS "updatedAt",
+
+        t.season,
+        t.game,
+
+        t.name
+          AS "teamName",
+
+        t.tag
+          AS "teamTag",
+
+        t.region,
+
+        t.logo_url
+          AS "logoUrl",
+
+        tm.first_name
+          AS "memberFirstName",
+
+        tm.nickname
+          AS "memberNickname",
+
+        tm.role
+          AS "memberRole",
+
+        tm.confirmation_status
+          AS "confirmationStatus"
+
+      FROM member_invites mi
+
+      INNER JOIN teams t
+        ON t.id =
+          mi.team_id
+
+      INNER JOIN team_members tm
+        ON tm.id =
+          mi.member_id
+
+      WHERE mi.token = ?
+
+      LIMIT 1
+    `,
+    [
+      token,
+    ],
+  );
+}
+
+async function ensureInviteExists(
+  database,
+  rawToken,
+) {
+  const invite =
+    await getInviteRecord(
+      database,
+      rawToken,
+    );
+
+  if (!invite) {
+    throw new ApiError(
+      "Tasdiqlash havolasi topilmadi.",
+      404,
+      "INVITE_NOT_FOUND",
+    );
+  }
+
+  return invite;
+}
+
+async function ensureInviteActive(
+  database,
+  invite,
+) {
+  if (
+    invite.status !==
+    "PENDING"
+  ) {
+    if (
+      invite.status ===
+      "CONFIRMED"
+    ) {
+      throw new ApiError(
+        "Bu taklif allaqachon tasdiqlangan.",
+        409,
+        "INVITE_ALREADY_CONFIRMED",
+      );
+    }
+
+    if (
+      invite.status ===
+      "REJECTED"
+    ) {
+      throw new ApiError(
+        "Bu taklif rad etilgan.",
+        409,
+        "INVITE_REJECTED",
+      );
+    }
+
+    throw new ApiError(
+      "Bu taklif endi faol emas.",
+      410,
+      "INVITE_INACTIVE",
+    );
+  }
+
+  if (
+    Date.parse(
+      invite.expiresAt,
+    ) <= Date.now()
+  ) {
+    const now =
+      new Date()
+        .toISOString();
+
+    await database
+      .prepare(
+        `
+          UPDATE member_invites
+
+          SET
+            status =
+              'EXPIRED',
+
+            updated_at = ?
+
+          WHERE id = ?
+        `,
+      )
+      .bind(
+        now,
+        invite.id,
+      )
+      .run();
+
+    throw new ApiError(
+      "Tasdiqlash havolasining muddati tugagan.",
+      410,
+      "INVITE_EXPIRED",
+    );
+  }
+}
+
+export async function createMemberInvite(
+  env,
+  rawTeamId,
+  rawMemberId,
+) {
+  const database =
+    requireDatabase(env);
+
+  const teamId =
+    cleanText(rawTeamId);
+
+  const memberId =
+    cleanText(rawMemberId);
+
+  const member =
+    await queryFirst(
+      database,
+      `
+        SELECT
+          tm.id,
+
+          tm.team_id
+            AS "teamId",
+
+          tm.role,
+
+          tm.confirmation_status
+            AS "confirmationStatus",
+
+          t.name
+            AS "teamName",
+
+          t.status
+            AS "teamStatus"
+
+        FROM team_members tm
+
+        INNER JOIN teams t
+          ON t.id =
+            tm.team_id
+
+        WHERE
+          tm.id = ?
+          AND tm.team_id = ?
+
+        LIMIT 1
+      `,
+      [
+        memberId,
+        teamId,
+      ],
+    );
+
+  if (!member) {
+    throw new ApiError(
+      "O‘yinchi topilmadi.",
+      404,
+      "MEMBER_NOT_FOUND",
+    );
+  }
+
+  if (
+    ![
+      "DRAFT",
+      "PENDING_CONFIRMATION",
+    ].includes(
+      member.teamStatus,
+    )
+  ) {
+    throw new ApiError(
+      "Ushbu jamoa tarkibi hozir tasdiqlash uchun yopiq.",
+      409,
+      "TEAM_ROSTER_LOCKED",
+    );
+  }
+
+  if (
+    member.role ===
+    "CAPTAIN"
+  ) {
+    throw new ApiError(
+      "Sardor allaqachon tasdiqlangan.",
+      409,
+      "CAPTAIN_ALREADY_CONFIRMED",
+    );
+  }
+
+  if (
+    member.confirmationStatus ===
+    "CONFIRMED"
+  ) {
+    throw new ApiError(
+      "Bu o‘yinchi allaqachon tarkibni tasdiqlagan.",
+      409,
+      "MEMBER_ALREADY_CONFIRMED",
+    );
+  }
+
+  const botUsername =
+    normalizeBotUsername(
+      env.BOT_USERNAME,
+    );
+
+  const inviteId =
+    crypto.randomUUID();
+
+  const token =
+    createInviteToken();
+
+  const now =
+    new Date();
+
+  const expiresAt =
+    new Date(
+      now.getTime() +
+      7 *
+      24 *
+      60 *
+      60 *
+      1000,
+    );
+
+  const deleteOldInvite =
+    database
+      .prepare(
+        `
+          DELETE FROM member_invites
+
+          WHERE member_id = ?
+        `,
+      )
+      .bind(
+        member.id,
+      );
+
+  const resetMember =
+    database
+      .prepare(
+        `
+          UPDATE team_members
+
+          SET confirmation_status =
+            'PENDING'
+
+          WHERE id = ?
+        `,
+      )
+      .bind(
+        member.id,
+      );
+
+  const insertInvite =
+    database
+      .prepare(
+        `
+          INSERT INTO member_invites (
+            id,
+            team_id,
+            member_id,
+            token,
+            status,
+            expires_at,
+            created_at,
+            updated_at
+          )
+          VALUES (
+            ?, ?, ?, ?,
+            'PENDING',
+            ?, ?, ?
+          )
+        `,
+      )
+      .bind(
+        inviteId,
+        member.teamId,
+        member.id,
+        token,
+        expiresAt.toISOString(),
+        now.toISOString(),
+        now.toISOString(),
+      );
+
+  try {
+    await database.batch([
+      deleteOldInvite,
+      resetMember,
+      insertInvite,
+    ]);
+  } catch (error) {
+    throwCreateDatabaseError(
+      error,
+    );
+  }
+
+  return {
+    token,
+
+    expiresAt:
+      expiresAt
+        .toISOString(),
+
+    inviteLink:
+      `https://t.me/${botUsername}?start=join_${token}`,
+  };
+}
+
+export async function getInvitePreview(
+  env,
+  rawToken,
+) {
+  const database =
+    requireDatabase(env);
+
+  const invite =
+    await ensureInviteExists(
+      database,
+      rawToken,
+    );
+
+  if (
+    invite.status ===
+      "PENDING" &&
+    Date.parse(
+      invite.expiresAt,
+    ) <= Date.now()
+  ) {
+    const now =
+      new Date()
+        .toISOString();
+
+    await database
+      .prepare(
+        `
+          UPDATE member_invites
+
+          SET
+            status =
+              'EXPIRED',
+
+            updated_at = ?
+
+          WHERE id = ?
+        `,
+      )
+      .bind(
+        now,
+        invite.id,
+      )
+      .run();
+
+    return {
+      ...invite,
+      status:
+        "EXPIRED",
+      updatedAt:
+        now,
+    };
+  }
+
+  return invite;
+}
+
+export async function confirmMemberInvite(
+  env,
+  rawToken,
+  payload = {},
+) {
+  const database =
+    requireDatabase(env);
+
+  if (
+    !payload ||
+    typeof payload !==
+      "object" ||
+    Array.isArray(payload)
+  ) {
+    throw new ApiError(
+      "So‘rov ma’lumotlari noto‘g‘ri.",
+      400,
+      "INVALID_JSON_BODY",
+    );
+  }
+
+  const invite =
+    await ensureInviteExists(
+      database,
+      rawToken,
+    );
+
+  await ensureInviteActive(
+    database,
+    invite,
+  );
+
+  const telegramId =
+    normalizeTelegramId(
+      payload.telegramId,
+      true,
+    );
+
+  const firstName =
+    cleanText(
+      payload.firstName,
+    );
+
+  const username =
+    cleanText(
+      payload.username,
+    ).replace(
+      /^@/,
+      "",
+    );
+
+  const existingTelegramUser =
+    await queryFirst(
+      database,
+      `
+        SELECT
+          tm.id,
+
+          t.name
+            AS "teamName"
+
+        FROM team_members tm
+
+        INNER JOIN teams t
+          ON t.id =
+            tm.team_id
+
+        WHERE
+          tm.season = ?
+          AND tm.game = ?
+          AND tm.telegram_id = ?
+          AND tm.id != ?
+
+        LIMIT 1
+      `,
+      [
+        invite.season,
+        invite.game,
+        telegramId,
+        invite.memberId,
+      ],
+    );
+
+  if (existingTelegramUser) {
+    throw new ApiError(
+      `Siz ushbu o‘yinda "${existingTelegramUser.teamName}" jamoasiga allaqachon biriktirilgansiz.`,
+      409,
+      "TELEGRAM_USER_ALREADY_REGISTERED",
+    );
+  }
+
+  const now =
+    new Date()
+      .toISOString();
+
+  const updateMember =
+    database
+      .prepare(
+        `
+          UPDATE team_members
+
+          SET
+            telegram_id = ?,
+
+            first_name =
+              CASE
+                WHEN ? != ''
+                  THEN ?
+                ELSE first_name
+              END,
+
+            username = ?,
+
+            confirmation_status =
+              'CONFIRMED'
+
+          WHERE id = ?
+        `,
+      )
+      .bind(
+        telegramId,
+        firstName,
+        firstName,
+        username,
+        invite.memberId,
+      );
+
+  const updateInvite =
+    database
+      .prepare(
+        `
+          UPDATE member_invites
+
+          SET
+            status =
+              'CONFIRMED',
+
+            updated_at = ?
+
+          WHERE id = ?
+        `,
+      )
+      .bind(
+        now,
+        invite.id,
+      );
+
+  const updateTeam =
+    database
+      .prepare(
+        `
+          UPDATE teams
+
+          SET
+            status =
+              'PENDING_CONFIRMATION',
+
+            updated_at = ?
+
+          WHERE id = ?
+        `,
+      )
+      .bind(
+        now,
+        invite.teamId,
+      );
+
+  try {
+    await database.batch([
+      updateMember,
+      updateInvite,
+      updateTeam,
+    ]);
+  } catch (error) {
+    throwCreateDatabaseError(
+      error,
+    );
+  }
+
+  return {
+    message:
+      "Jamoaga qo‘shilish tasdiqlandi.",
+
+    invite:
+      await getInvitePreview(
+        env,
+        invite.token,
+      ),
+
+    team:
+      await getTeamById(
+        env,
+        invite.teamId,
+      ),
+  };
+}
+
+export async function rejectMemberInvite(
+  env,
+  rawToken,
+) {
+  const database =
+    requireDatabase(env);
+
+  const invite =
+    await ensureInviteExists(
+      database,
+      rawToken,
+    );
+
+  await ensureInviteActive(
+    database,
+    invite,
+  );
+
+  const now =
+    new Date()
+      .toISOString();
+
+  const updateMember =
+    database
+      .prepare(
+        `
+          UPDATE team_members
+
+          SET confirmation_status =
+            'REJECTED'
+
+          WHERE id = ?
+        `,
+      )
+      .bind(
+        invite.memberId,
+      );
+
+  const updateInvite =
+    database
+      .prepare(
+        `
+          UPDATE member_invites
+
+          SET
+            status =
+              'REJECTED',
+
+            updated_at = ?
+
+          WHERE id = ?
+        `,
+      )
+      .bind(
+        now,
+        invite.id,
+      );
+
+  await database.batch([
+    updateMember,
+    updateInvite,
+  ]);
+
+  return {
+    message:
+      "Jamoa taklifi rad etildi.",
+
+    invite:
+      await getInvitePreview(
+        env,
+        invite.token,
+      ),
+  };
+}
+
+export async function submitTeam(
+  env,
+  rawTeamId,
+) {
+  const database =
+    requireDatabase(env);
+
+  const team =
+    await getWritableRosterTeam(
+      database,
+      rawTeamId,
+    );
+
+  const detail =
+    await getTeamById(
+      env,
+      team.id,
+    );
+
+  if (
+    !detail.mediaConsent ||
+    !detail.rulesConsent
+  ) {
+    throw new ApiError(
+      "Media va liga shartlari roziliklari to‘liq tasdiqlanmagan.",
+      409,
+      "TEAM_CONSENTS_REQUIRED",
+    );
+  }
+
+  const incompleteMembers =
+    detail.members.filter(
+      (member) =>
+        !cleanText(
+          member.fullName,
+        ) ||
+        !cleanText(
+          member.birthDate,
+        ) ||
+        !cleanText(
+          member.region,
+        ) ||
+        !cleanText(
+          member.phone,
+        ),
+    );
+
+  if (
+    incompleteMembers.length >
+    0
+  ) {
+    throw new ApiError(
+      "Barcha o‘yinchilarning ism-familiyasi, tug‘ilgan sanasi, viloyati va telefon raqami to‘liq bo‘lishi kerak.",
+      409,
+      "MEMBER_PROFILE_INCOMPLETE",
+    );
+  }
+
+  const underageMembers =
+    detail.members.filter(
+      (member) =>
+        member.eligible !==
+        true,
+    );
+
+  if (
+    underageMembers.length >
+    0
+  ) {
+    const players =
+      underageMembers
+        .map(
+          (member) =>
+            `${member.nickname} (${member.age ?? "?"} yosh)`,
+        )
+        .join(", ");
+
+    throw new ApiError(
+      `Yosh chegarasiga mos kelmaydi: ${players}. Minimal yosh ${detail.minimumAge}.`,
+      409,
+      "TEAM_HAS_UNDERAGE_MEMBERS",
+    );
+  }
+
+  const counts =
+    await getRosterCounts(
+      database,
+      team.id,
+    );
+
+  const limits =
+    getTeamLimits(
+      team.game,
+    );
+
+  if (
+    counts.mainCount !==
+    limits.main
+  ) {
+    throw new ApiError(
+      `${team.game} jamoasida asosiy tarkib ${limits.main} nafar bo‘lishi kerak.`,
+      409,
+      "MAIN_ROSTER_INCOMPLETE",
+    );
+  }
+
+  if (
+    limits.reserveRequired &&
+    counts.reserveCount !==
+      limits.reserve
+  ) {
+    throw new ApiError(
+      `${team.game} jamoasida ${limits.reserve} nafar zaxira o‘yinchi bo‘lishi shart.`,
+      409,
+      "RESERVE_ROSTER_INCOMPLETE",
+    );
+  }
+
+  if (
+    counts.confirmedCount !==
+    counts.total
+  ) {
+    throw new ApiError(
+      "Barcha o‘yinchilar jamoaga qo‘shilishni tasdiqlashi kerak.",
+      409,
+      "MEMBERS_NOT_CONFIRMED",
+    );
+  }
+
+  const now =
+    new Date()
+      .toISOString();
+
+  await database
+    .prepare(
+      `
+        UPDATE teams
+
+        SET
+          status =
+            'PENDING_REVIEW',
+
+          updated_at = ?
+
+        WHERE id = ?
+      `,
+    )
+    .bind(
+      now,
+      team.id,
+    )
+    .run();
+
+  return getTeamById(
+    env,
+    team.id,
+  );
+}
+
 export async function listTeams(
   env,
   searchParams,
